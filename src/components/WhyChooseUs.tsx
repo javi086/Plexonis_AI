@@ -25,7 +25,7 @@ export default function WhyChooseUs() {
   ];
 
   return (
-    <section id="benefits" className="py-24 relative overflow-hidden bg-[#05050b]/40">
+    <section id="benefits" className="py-24 relative overflow-hidden bg-[#070c18]/40">
       {/* Glow highlight */}
       <div className="absolute top-[30%] right-[10%] w-[30vw] h-[30vw] rounded-full bg-brand-cyan/5 glow-blur -z-10 animate-pulse-slow" />
 
