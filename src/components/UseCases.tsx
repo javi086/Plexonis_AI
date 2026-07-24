@@ -62,7 +62,7 @@ export default function UseCases() {
   const ActiveIcon = activeData.icon;
 
   return (
-    <section id="use-cases" className="py-24 relative overflow-hidden bg-[#030303]">
+    <section id="use-cases" className="py-24 relative overflow-hidden bg-[#070c18]">
       {/* Background glow circle */}
       <div className="absolute bottom-[10%] left-[5%] w-[35vw] h-[35vw] rounded-full bg-brand-cyan/5 glow-blur -z-10 animate-pulse-slow" />
 

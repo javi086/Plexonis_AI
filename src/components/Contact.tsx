@@ -40,7 +40,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24 relative overflow-hidden bg-[#05050b]/40">
+    <section id="contact" className="py-24 relative overflow-hidden bg-[#070c18]/40">
       {/* Background glow */}
       <div className="absolute top-[40%] left-[-15%] w-[40vw] h-[40vw] rounded-full bg-brand-cyan/5 glow-blur -z-10 animate-pulse-slow" />
       <div className="absolute bottom-[20%] right-[-10%] w-[35vw] h-[35vw] rounded-full bg-brand-violet/5 glow-blur -z-10" />
@@ -134,7 +134,7 @@ export default function Contact() {
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="Jane Doe"
-                      className="w-full bg-[#0a0a14] border border-white/10 focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/50 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 outline-none transition-all"
+                      className="w-full bg-[#0f172a] border border-[#1e293b]/80 focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/50 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 outline-none transition-all"
                     />
                   </div>
 
@@ -150,7 +150,7 @@ export default function Contact() {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="jane@company.com"
-                      className="w-full bg-[#0a0a14] border border-white/10 focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/50 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 outline-none transition-all"
+                      className="w-full bg-[#0f172a] border border-[#1e293b]/80 focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/50 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 outline-none transition-all"
                     />
                   </div>
                 </div>
@@ -167,7 +167,7 @@ export default function Contact() {
                       value={formData.company}
                       onChange={handleChange}
                       placeholder="Acme Corp"
-                      className="w-full bg-[#0a0a14] border border-white/10 focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/50 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 outline-none transition-all"
+                      className="w-full bg-[#0f172a] border border-[#1e293b]/80 focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/50 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 outline-none transition-all"
                     />
                   </div>
 
@@ -180,7 +180,7 @@ export default function Contact() {
                       name="service"
                       value={formData.service}
                       onChange={handleChange}
-                      className="w-full bg-[#0a0a14] border border-white/10 focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/50 rounded-xl px-4 py-3.5 text-sm text-white outline-none transition-all"
+                      className="w-full bg-[#0f172a] border border-[#1e293b]/80 focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/50 rounded-xl px-4 py-3.5 text-sm text-white outline-none transition-all"
                     >
                       <option value="automations">AI Automations</option>
                       <option value="agents">Custom AI Agents</option>
@@ -202,7 +202,7 @@ export default function Contact() {
                     value={formData.message}
                     onChange={handleChange}
                     placeholder="Tell us about the workflow or problem you're looking to solve with AI..."
-                    className="w-full bg-[#0a0a14] border border-white/10 focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/50 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 outline-none transition-all resize-none"
+                    className="w-full bg-[#0f172a] border border-[#1e293b]/80 focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/50 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 outline-none transition-all resize-none"
                   />
                 </div>
 

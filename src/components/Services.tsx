@@ -29,7 +29,7 @@ export default function Services() {
   ];
 
   return (
-    <section id="services" className="py-24 relative overflow-hidden bg-[#05050b]/40">
+    <section id="services" className="py-24 relative overflow-hidden bg-[#070c18]/40">
       {/* Background soft light */}
       <div className="absolute top-[40%] right-[-10%] w-[40vw] h-[40vw] rounded-full bg-brand-cyan/5 glow-blur -z-10" />
 

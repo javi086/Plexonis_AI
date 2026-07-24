@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Menu, X, ArrowUpRight, Cpu } from "lucide-react";
+import Image from "next/image";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,23 +29,41 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-gray-100 border-slate-200/20 ${scrolled
           ? "glass-header shadow-lg shadow-black/20 py-4"
           : "bg-transparent py-6"
         }`}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
         {/* Logo */}
-        <a href="#" className="flex items-center space-x-2.5 group">
-          <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-violet to-brand-cyan p-[1px] transition-transform duration-300 group-hover:rotate-6">
-            <div className="w-full h-full bg-[#0a0a14] rounded-[11px] flex items-center justify-center">
-              <Cpu className="w-5 h-5 text-brand-cyan group-hover:text-brand-violet transition-colors duration-300" />
-            </div>
-          </div>
-          <span className="font-outfit text-xl font-bold tracking-tight text-white">
-            Plexonis<span className="text-brand-cyan">.AI</span>
-          </span>
-        </a>
+       <a href="/" className="flex items-center gap-3 group focus:outline-none">
+      {/* 1. Isolated Vector / PNG Octopus Icon */}
+      <div className="relative h-28 w-28 flex-shrink-0 flex items-center justify-center rounded-full bg-white p-2 shadow-lg shadow-black/10 transition-transform duration-200 group-hover:scale-105 ">
+        <div className="relative h-full w-full border-solid">
+          <Image
+            src="/images/plexonis_Icon_v1.png" 
+            alt="Plexonis AI Logo Mark"
+            fill
+            sizes="60px"
+            className="object-contain"
+            priority
+          />
+        </div>
+      </div>
+
+      {/* 2. Scalable Native Tailwind Text Engine */}
+      <div className="flex items-center text-xl font-bold tracking-tight">
+        {/* Navy Primary Wordmark */}
+        <span className="text-[#0B0F19] dark:text-slate-50 transition-colors text-4xl">
+          Plexonis
+        </span>
+        
+        {/* Gradient / Cyan AI Highlight */}
+        <span className="ml-1 bg-gradient-to-r from-cyan-500 to-cyan-400 bg-clip-text text-transparent font-extrabold text-4xl">
+          AI
+        </span>
+      </div>
+    </a>
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center space-x-8">
@@ -82,7 +101,7 @@ export default function Header() {
 
       {/* Mobile Drawer */}
       <div
-        className={`fixed inset-0 top-[73px] z-40 bg-[#030303]/98 backdrop-blur-xl md:hidden transition-all duration-300 transform ${isOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
+        className={`fixed inset-0 top-[73px] z-40 bg-[#070c18]/98 backdrop-blur-xl md:hidden transition-all duration-300 transform ${isOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
           }`}
       >
         <nav className="flex flex-col p-8 space-y-6">
