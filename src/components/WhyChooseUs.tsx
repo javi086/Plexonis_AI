@@ -1,76 +1,74 @@
+"use client";
+
 import { Shield, Sparkles, TrendingUp, Users } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function WhyChooseUs() {
-  const benefits = [
-    {
-      icon: TrendingUp,
-      title: "Results-Driven Approach",
-      description: "We align project scope directly with business metrics. If it doesn't reduce manual hours or save cloud costs, we don't build it.",
-    },
-    {
-      icon: Sparkles,
-      title: "Tailored Solutions",
-      description: "No generic chat prompts or wrapper scripts. We write custom integrations mapped exactly to your legacy databases and APIs.",
-    },
-    {
-      icon: Shield,
-      title: "Practical AI, Not Hype",
-      description: "We focus on mature, reliable libraries and self-healing error catchers, ensuring your AI agents don't crash when APIs change.",
-    },
-    {
-      icon: Users,
-      title: "Ongoing Partnership",
-      description: "Your system changes, and so should your AI. We provide monthly audits, safety compliance checks, and prompt tuning.",
-    },
+  const { t } = useLanguage();
+
+  const benefitsList = [
+    { icon: TrendingUp },
+    { icon: Sparkles },
+    { icon: Shield },
+    { icon: Users },
   ];
 
+  const benefits = benefitsList.map((benefit, idx) => ({
+    ...benefit,
+    title: t.whyUs.benefits[idx]?.title || "",
+    description: t.whyUs.benefits[idx]?.desc || "",
+  }));
+
   return (
-    <section id="benefits" className="py-24 relative overflow-hidden bg-[#070c18]/40">
-      {/* Glow highlight */}
-      <div className="absolute top-[30%] right-[10%] w-[30vw] h-[30vw] rounded-full bg-brand-cyan/5 glow-blur -z-10 animate-pulse-slow" />
+    <section id="benefits" className="py-24 relative overflow-hidden bg-slate-950">
+      {/* Background glow highlight */}
+      <div className="absolute top-[30%] right-[10%] w-[30vw] h-[30vw] rounded-full bg-cyan-500/5 blur-[140px] pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 grid md:grid-cols-12 gap-12 items-center">
-        {/* Left Column - Headline & Stats */}
+        {/* Left Column - Headline & Key Proof Points */}
         <div className="md:col-span-5 space-y-6">
-          <h2 className="font-outfit text-xs font-semibold uppercase tracking-widest text-brand-cyan">
-            Why Partner With Us
+          <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-xs font-semibold tracking-wide text-cyan-400">
+            <span>{t.whyUs.badge}</span>
+          </div>
+
+          <h2 className="font-outfit text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-50 leading-tight tracking-tight">
+            {t.whyUs.title}
           </h2>
-          <h3 className="font-outfit text-3xl sm:text-4xl font-extrabold text-white leading-tight">
-            We Bridge the Gap Between Research and Production
-          </h3>
-          <p className="text-gray-400 leading-relaxed">
-            Most AI projects fail due to poor data integration and unstable prompts. We engineer custom architectures designed for security, deterministic actions, and maximum reliability.
+
+          <p className="text-slate-400 text-base leading-relaxed">
+            {t.whyUs.subtitle}
           </p>
 
-          <div className="pt-6 grid grid-cols-2 gap-6">
-            <div className="p-4 bg-white/5 rounded-xl border border-white/5">
-              <p className="text-3xl font-extrabold text-white font-outfit">100%</p>
-              <p className="text-xs text-gray-500 mt-1">IP Ownership Retained</p>
+          {/* High-Impact Stat Boxes */}
+          <div className="pt-4 grid grid-cols-2 gap-4">
+            <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+              <p className="text-3xl font-extrabold text-slate-50 font-outfit">{t.whyUs.stats.stat1}</p>
+              <p className="text-xs text-slate-400 mt-1 font-medium">{t.whyUs.stats.label1}</p>
             </div>
-            <div className="p-4 bg-white/5 rounded-xl border border-white/5">
-              <p className="text-3xl font-extrabold text-white font-outfit">24/7</p>
-              <p className="text-xs text-gray-500 mt-1">Uptime & Monitoring</p>
+            <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
+              <p className="text-3xl font-extrabold text-slate-50 font-outfit">{t.whyUs.stats.stat2}</p>
+              <p className="text-xs text-slate-400 mt-1 font-medium">{t.whyUs.stats.label2}</p>
             </div>
           </div>
         </div>
 
-        {/* Right Column - Benefit Cards */}
+        {/* Right Column - Benefit Cards Grid */}
         <div className="md:col-span-7 grid sm:grid-cols-2 gap-6">
           {benefits.map((benefit, idx) => {
             const Icon = benefit.icon;
             return (
               <div
                 key={idx}
-                className="p-6 rounded-2xl glass-card border border-white/5 hover:border-brand-violet/20 flex flex-col justify-start space-y-4"
+                className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition-all duration-300 flex flex-col justify-start space-y-4 group"
               >
-                <div className="w-10 h-10 rounded-lg bg-brand-violet/10 flex items-center justify-center">
-                  <Icon className="w-5 h-5 text-brand-violet" />
+                <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-cyan-500 transition-all duration-300">
+                  <Icon className="w-5 h-5 text-cyan-400 group-hover:text-white transition-colors duration-300" />
                 </div>
                 <div>
-                  <h4 className="font-outfit text-base font-bold text-white mb-2">
+                  <h3 className="font-outfit text-base font-bold text-slate-100 mb-2 group-hover:text-cyan-400 transition-colors">
                     {benefit.title}
-                  </h4>
-                  <p className="text-xs text-gray-400 leading-relaxed">
+                  </h3>
+                  <p className="text-xs text-slate-400 leading-relaxed">
                     {benefit.description}
                   </p>
                 </div>

@@ -2,32 +2,60 @@
 
 import { useState } from "react";
 import { Mail, Check, Calendar, ArrowRight, Loader2 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Contact() {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     company: "",
-    service: "automations",
+    service: "lead-agents",
     message: "",
   });
 
-  const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Email Validation using Regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setStatus("error");
+      return;
+    }
+
     setStatus("submitting");
-    // Simulate API request
-    setTimeout(() => {
+
+    try {
+      const webhookUrl = process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL;
+      
+      if (webhookUrl) {
+        const response = await fetch(webhookUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
+        if (!response.ok) {
+          throw new Error("Webhook submission failed");
+        }
+      } else {
+        // Fallback simulated network request for testing
+        await new Promise((resolve) => setTimeout(resolve, 1200));
+      }
+
       setStatus("success");
       setFormData({
         name: "",
         email: "",
         company: "",
-        service: "automations",
+        service: "lead-agents",
         message: "",
       });
-    }, 1500);
+    } catch (err) {
+      setStatus("error");
+    }
   };
 
   const handleChange = (
@@ -40,91 +68,96 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-24 relative overflow-hidden bg-[#070c18]/40">
-      {/* Background glow */}
-      <div className="absolute top-[40%] left-[-15%] w-[40vw] h-[40vw] rounded-full bg-brand-cyan/5 glow-blur -z-10 animate-pulse-slow" />
-      <div className="absolute bottom-[20%] right-[-10%] w-[35vw] h-[35vw] rounded-full bg-brand-violet/5 glow-blur -z-10" />
+    <section id="contact" className="py-24 relative overflow-hidden bg-slate-950">
+      {/* Background ambient lighting */}
+      <div className="absolute top-[40%] left-[-15%] w-[40vw] h-[40vw] rounded-full bg-cyan-500/5 blur-[140px] pointer-events-none -z-10" />
+      <div className="absolute bottom-[20%] right-[-10%] w-[35vw] h-[35vw] rounded-full bg-blue-600/5 blur-[140px] pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="grid md:grid-cols-12 gap-12 items-stretch">
-          {/* Left Column: CTAs & Information */}
+          
+          {/* Left Column: Direct Action & Info */}
           <div className="md:col-span-5 flex flex-col justify-between space-y-8">
             <div className="space-y-6">
-              <h2 className="font-outfit text-xs font-semibold uppercase tracking-widest text-brand-cyan">
-                Get In Touch
+              <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-xs font-semibold tracking-wide text-cyan-400">
+                <span>{t.contact.badge}</span>
+              </div>
+              <h2 className="font-outfit text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-50 leading-tight tracking-tight">
+                {t.contact.title}
               </h2>
-              <h3 className="font-outfit text-3xl sm:text-4xl font-extrabold text-white leading-tight">
-                Let's Build Your Automated Future
-              </h3>
-              <p className="text-gray-400 leading-relaxed">
-                Have a manual operation you want off your plate? Or need a custom agent built? Fill out the form or schedule a discovery call with one of our AI architects.
+              <p className="text-slate-400 text-base leading-relaxed">
+                {t.contact.subtitle}
               </p>
             </div>
 
-            {/* Quick Actions */}
+            {/* Quick Actions Cards */}
             <div className="space-y-4">
-              <div className="p-5 bg-white/5 rounded-2xl border border-white/5 flex items-start space-x-4">
-                <Calendar className="w-5 h-5 text-brand-cyan shrink-0 mt-1" />
+              {/* Calendar Booking Card */}
+              <div className="p-5 bg-slate-900/80 rounded-2xl border border-slate-800 flex items-start space-x-4 hover:border-slate-700 transition-colors">
+                <Calendar className="w-5 h-5 text-cyan-400 shrink-0 mt-1" />
                 <div>
-                  <h4 className="font-outfit text-sm font-bold text-white">Book a Discovery Call</h4>
-                  <p className="text-xs text-gray-400 mt-1 mb-3">
-                    Prefer video? Schedule a direct 15-minute scoping call via our calendar.
+                  <h3 className="font-outfit text-sm font-bold text-slate-100">{t.contact.calendarTitle}</h3>
+                  <p className="text-xs text-slate-400 mt-1 mb-3">
+                    {t.contact.calendarDesc}
                   </p>
                   <a
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      alert("Calendar modal / link placeholder");
-                    }}
-                    className="inline-flex items-center text-xs font-bold text-brand-cyan hover:underline"
+                    href="https://cal.com/plexonis" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-xs font-bold text-cyan-400 hover:text-cyan-300 transition-colors"
                   >
-                    Select a time slot
+                    {t.contact.calendarBtn}
                     <ArrowRight className="ml-1 w-3.5 h-3.5" />
                   </a>
                 </div>
               </div>
 
-              <div className="p-5 bg-white/5 rounded-2xl border border-white/5 flex items-start space-x-4">
-                <Mail className="w-5 h-5 text-brand-violet shrink-0 mt-1" />
+              {/* Direct Contact Card */}
+              <div className="p-5 bg-slate-900/80 rounded-2xl border border-slate-800 flex items-start space-x-4 hover:border-slate-700 transition-colors">
+                <Mail className="w-5 h-5 text-blue-400 shrink-0 mt-1" />
                 <div>
-                  <h4 className="font-outfit text-sm font-bold text-white">Email Us Directly</h4>
-                  <p className="text-xs text-gray-400 mt-1">
-                    Send blueprints, scope documents, or custom RFCs.
+                  <h3 className="font-outfit text-sm font-bold text-slate-100">{t.contact.emailTitle}</h3>
+                  <p className="text-xs text-slate-400 mt-1">
+                    {t.contact.emailDesc}
                   </p>
-                  <span className="text-xs font-mono text-brand-violet mt-2 block">
+                  <a 
+                    href="mailto:hello@plexonis.com" 
+                    className="text-xs font-mono text-cyan-400 mt-2 block hover:underline"
+                  >
                     hello@plexonis.com
-                  </span>
+                  </a>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Right Column: Contact Form */}
-          <div className="md:col-span-7 p-8 rounded-2xl glass-card border border-white/5 flex flex-col justify-center">
+          {/* Right Column: Interactive Form */}
+          <div className="md:col-span-7 p-8 rounded-2xl bg-slate-900/80 border border-slate-800 flex flex-col justify-center relative">
             {status === "success" ? (
               <div className="text-center py-12 space-y-4">
-                <div className="w-16 h-16 bg-brand-cyan/10 border border-brand-cyan/30 rounded-full flex items-center justify-center mx-auto text-brand-cyan">
+                <div className="w-16 h-16 bg-cyan-500/10 border border-cyan-500/30 rounded-full flex items-center justify-center mx-auto text-cyan-400">
                   <Check className="w-8 h-8" />
                 </div>
-                <h4 className="font-outfit text-xl font-bold text-white">
-                  Message Received!
-                </h4>
-                <p className="text-sm text-gray-400 max-w-sm mx-auto">
-                  One of our lead engineers will analyze your request and reach out within 1 business day.
+                <h3 className="font-outfit text-2xl font-bold text-slate-50">
+                  {t.contact.form.successTitle}
+                </h3>
+                <p className="text-sm text-slate-400 max-w-sm mx-auto leading-relaxed">
+                  {t.contact.form.successDesc}
                 </p>
                 <button
                   onClick={() => setStatus("idle")}
-                  className="mt-4 px-6 py-2.5 rounded-full text-xs font-semibold bg-white/5 border border-white/10 hover:bg-white/10 text-white transition-colors"
+                  className="mt-4 px-6 py-2.5 rounded-full text-xs font-semibold bg-slate-800 border border-slate-700 hover:bg-slate-700 text-slate-200 transition-colors"
                 >
-                  Send another inquiry
+                  {t.contact.form.sendAnother}
                 </button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid sm:grid-cols-2 gap-6">
+                  {/* Name Input */}
                   <div className="space-y-2">
-                    <label htmlFor="name" className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                      Your Name
+                    <label htmlFor="name" className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                      {t.contact.form.name}
                     </label>
                     <input
                       type="text"
@@ -134,13 +167,14 @@ export default function Contact() {
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="Jane Doe"
-                      className="w-full bg-[#0f172a] border border-[#1e293b]/80 focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/50 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 outline-none transition-all"
+                      className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 outline-none transition-all"
                     />
                   </div>
 
+                  {/* Email Input */}
                   <div className="space-y-2">
-                    <label htmlFor="email" className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                      Business Email
+                    <label htmlFor="email" className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                      {t.contact.form.email}
                     </label>
                     <input
                       type="email"
@@ -150,15 +184,16 @@ export default function Contact() {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="jane@company.com"
-                      className="w-full bg-[#0f172a] border border-[#1e293b]/80 focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/50 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 outline-none transition-all"
+                      className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 outline-none transition-all"
                     />
                   </div>
                 </div>
 
                 <div className="grid sm:grid-cols-2 gap-6">
+                  {/* Company Input */}
                   <div className="space-y-2">
-                    <label htmlFor="company" className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                      Company Name
+                    <label htmlFor="company" className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                      {t.contact.form.company}
                     </label>
                     <input
                       type="text"
@@ -167,32 +202,35 @@ export default function Contact() {
                       value={formData.company}
                       onChange={handleChange}
                       placeholder="Acme Corp"
-                      className="w-full bg-[#0f172a] border border-[#1e293b]/80 focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/50 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 outline-none transition-all"
+                      className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 outline-none transition-all"
                     />
                   </div>
 
+                  {/* Refined Interest Dropdown */}
                   <div className="space-y-2">
-                    <label htmlFor="service" className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                      Interest Area
+                    <label htmlFor="service" className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                      {t.contact.form.goal}
                     </label>
                     <select
                       id="service"
                       name="service"
                       value={formData.service}
                       onChange={handleChange}
-                      className="w-full bg-[#0f172a] border border-[#1e293b]/80 focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/50 rounded-xl px-4 py-3.5 text-sm text-white outline-none transition-all"
+                      className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl px-4 py-3 text-sm text-slate-100 outline-none transition-all"
                     >
-                      <option value="automations">AI Automations</option>
-                      <option value="agents">Custom AI Agents</option>
-                      <option value="consulting">Strategic AI Consulting</option>
-                      <option value="integrations">Intelligent System Integrations</option>
+                      <option value="lead-agents">{t.contact.form.dropdownOptions.leadAgents}</option>
+                      <option value="workflows">{t.contact.form.dropdownOptions.workflows}</option>
+                      <option value="web-design">{t.contact.form.dropdownOptions.webDesign}</option>
+                      <option value="knowledge-base">{t.contact.form.dropdownOptions.knowledgeBase}</option>
+                      <option value="integrations">{t.contact.form.dropdownOptions.integrations}</option>
                     </select>
                   </div>
                 </div>
 
+                {/* Project Details Textarea */}
                 <div className="space-y-2">
-                  <label htmlFor="message" className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                    Project Details
+                  <label htmlFor="message" className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                    {t.contact.form.overview}
                   </label>
                   <textarea
                     id="message"
@@ -201,25 +239,32 @@ export default function Contact() {
                     rows={4}
                     value={formData.message}
                     onChange={handleChange}
-                    placeholder="Tell us about the workflow or problem you're looking to solve with AI..."
-                    className="w-full bg-[#0f172a] border border-[#1e293b]/80 focus:border-brand-cyan/50 focus:ring-1 focus:ring-brand-cyan/50 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 outline-none transition-all resize-none"
+                    placeholder={t.contact.form.overviewPlaceholder}
+                    className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 outline-none transition-all resize-none animate-pulse-slow"
                   />
                 </div>
 
+                {/* Submit Button */}
                 <button
                   type="submit"
                   disabled={status === "submitting"}
-                  className="w-full inline-flex items-center justify-center px-6 py-4 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-brand-violet to-brand-cyan hover:opacity-95 shadow-md shadow-brand-cyan/10 transition-all duration-300 disabled:opacity-50"
+                  className="w-full inline-flex items-center justify-center px-6 py-4 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-cyan-500 hover:opacity-95 shadow-lg shadow-cyan-500/10 transition-all duration-300 disabled:opacity-50 cursor-pointer"
                 >
                   {status === "submitting" ? (
                     <>
                       <Loader2 className="animate-spin mr-2 w-4 h-4" />
-                      Analyzing details...
+                      {t.contact.form.submittingBtn}
                     </>
                   ) : (
-                    "Submit Project Brief"
+                    t.contact.form.submitBtn
                   )}
                 </button>
+                
+                {status === "error" && (
+                  <p className="text-xs text-red-400 text-center font-semibold mt-2">
+                    Please ensure you have entered a valid email address and try again.
+                  </p>
+                )}
               </form>
             )}
           </div>

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
+import { LanguageProvider } from "@/context/LanguageContext";
+import PlexonisChatbot from "@/components/PlexonisChatbot";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -35,9 +37,24 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${outfit.variable} h-full antialiased`}
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.__VUE_OPTIONS_API__ = true;
+              window.__VUE_PROD_DEVTOOLS__ = false;
+              window.__VUE_PROD_HYDRATION_MISMATCH_DETAILS__ = false;
+            `,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-[#030303] text-gray-100 font-sans">
-        {children}
+        <LanguageProvider>
+          {children}
+          <PlexonisChatbot />
+        </LanguageProvider>
       </body>
     </html>
   );
 }
+
