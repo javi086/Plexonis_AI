@@ -3,84 +3,34 @@
 import { useEffect } from "react";
 import "@n8n/chat/style.css";
 
+// Default fallback URL for Staging/Local if the ENV variable is not injected during build
+const DEFAULT_WEBHOOK_URL =
+  "https://n8n-n8n.u7ftoi.easypanel.host/webhook/3bbf4465-e049-43af-bff7-ee3c9ebf5ac3/chat";
+
+const WEBHOOK_URL =
+  process.env.NEXT_PUBLIC_N8N_CHAT_WEBHOOK_URL || DEFAULT_WEBHOOK_URL;
+
 export default function PlexonisChatbot() {
   useEffect(() => {
-    // 0. Define Vue feature flags globally on the window object to silence the ESM bundler warnings
     if (typeof window !== "undefined") {
       (window as any).__VUE_OPTIONS_API__ = true;
       (window as any).__VUE_PROD_DEVTOOLS__ = false;
       (window as any).__VUE_PROD_HYDRATION_MISMATCH_DETAILS__ = false;
     }
 
-    // 1. Intercept fetch calls to mock the chatbot for testing when webhook is a placeholder
-    const originalFetch = window.fetch;
-    const webhookUrl = process.env.NEXT_PUBLIC_N8N_CHAT_WEBHOOK_URL || "";
-    const isPlaceholder = webhookUrl.includes("your-n8n-instance") || webhookUrl.includes("YOUR-CHAT-ID") || !webhookUrl;
+    if (!WEBHOOK_URL) {
+      console.error("PlexonisChatbot: No webhook URL configured.");
+      return;
+    }
 
-    window.fetch = async (input, init) => {
-      const url = typeof input === "string" ? input : input instanceof URL ? input.href : (input as Request).url;
-      
-      if (isPlaceholder && url.includes(webhookUrl)) {
-        try {
-          let bodyData: Record<string, any> = {};
-          if (init?.body) {
-            if (typeof init.body === "string") {
-              bodyData = JSON.parse(init.body);
-            } else if (init.body instanceof FormData) {
-              bodyData = Object.fromEntries(init.body.entries());
-            }
-          }
-
-          if (bodyData.action === "loadPreviousSession") {
-            return new Response(JSON.stringify({ data: [] }), {
-              status: 200,
-              headers: { "Content-Type": "application/json" }
-            });
-          }
-
-          if (bodyData.action === "sendMessage") {
-            const userMsg = bodyData.message || bodyData.chatInput || "hello";
-            const responseText = `Hello! This is a simulated response from the Plexonis Assistant. You said: "${userMsg}". To link this chatbot to your live workflows, please update NEXT_PUBLIC_N8N_CHAT_WEBHOOK_URL in your .env.local file.`;
-            return new Response(JSON.stringify({ text: responseText }), {
-              status: 200,
-              headers: { "Content-Type": "application/json" }
-            });
-          }
-        } catch (e) {
-          console.error("n8n Chatbot: mock fetch intercept error:", e);
-        }
-
-        return new Response(JSON.stringify({}), {
-          status: 200,
-          headers: { "Content-Type": "application/json" }
-        });
-      }
-
-      return originalFetch(input, init);
-    };
-
-    // 2. Handle actual network errors (downtime, CORS, etc.) gracefully
-    const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
-      if (
-        event.reason instanceof Error &&
-        (event.reason.message.includes("Failed to fetch") || event.reason.message.includes("fetch"))
-      ) {
-        console.warn("n8n Chatbot: network error handled gracefully:", event.reason.message);
-        event.preventDefault();
-      }
-    };
-
-    window.addEventListener("unhandledrejection", handleUnhandledRejection);
-
-    // 3. Initialize n8n chat
     import("@n8n/chat").then(({ createChat }) => {
       createChat({
-        webhookUrl: webhookUrl || "https://localhost/placeholder-webhook",
+        webhookUrl: WEBHOOK_URL,
         mode: "window",
         showWelcomeScreen: false,
         initialMessages: [
           "Hi there! 👋 Welcome to Plexonis AI.",
-          "How can I help you automate your business workflows today?"
+          "How can I help you today?"
         ],
         i18n: {
           en: {
@@ -93,12 +43,9 @@ export default function PlexonisChatbot() {
           }
         }
       });
+    }).catch((err) => {
+      console.error("n8n Chatbot failed to load:", err);
     });
-
-    return () => {
-      window.fetch = originalFetch;
-      window.removeEventListener("unhandledrejection", handleUnhandledRejection);
-    };
   }, []);
 
   return null;
