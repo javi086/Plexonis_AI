@@ -1,33 +1,45 @@
-import { Bot, Zap, MessageSquareCode, Database, ArrowUpRight } from "lucide-react";
+"use client";
+
+import { Bot, Zap, MessageSquareCode, Database, ArrowUpRight, Globe } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Services() {
+  const { t } = useLanguage();
+
   const servicesList = [
     {
       icon: MessageSquareCode,
-      title: "AI Lead Capture & Conversational Agents",
-      description: "Omnichannel AI agents (WhatsApp, Web, LinkedIn) that engage inbound leads instantly, qualify prospects through custom logic, and schedule meetings on your team's calendar 24/7.",
-      tags: ["WhatsApp & Web Bots", "Instant Lead Qualification", "Automated Booking"],
-      badge: "Highest ROI",
+      title: t.services.items.leadAgents.title,
+      description: t.services.items.leadAgents.desc,
+      tags: t.services.items.leadAgents.tags,
+      badge: t.services.items.leadAgents.badge,
     },
     {
       icon: Zap,
-      title: "Autonomous Workflow Engineering",
-      description: "Eliminate manual data entry and operational bottlenecks. We build custom, self-running event pipelines that connect your forms, CRMs, email systems, and databases.",
-      tags: ["N8N / Make Workflows", "API Integrations", "Lead Routing & Alerts"],
+      title: t.services.items.workflows.title,
+      description: t.services.items.workflows.desc,
+      tags: t.services.items.workflows.tags,
       badge: null,
     },
     {
       icon: Database,
-      title: "Custom RAG & Knowledge Base Agents",
-      description: "Turn your company's PDFs, internal documents, and SOPs into intelligent, secure AI assistants that answer client queries and help staff retrieve data in seconds.",
-      tags: ["Internal Doc Search", "Custom Knowledge Bases", "Enterprise Security"],
+      title: t.services.items.knowledgeBase.title,
+      description: t.services.items.knowledgeBase.desc,
+      tags: t.services.items.knowledgeBase.tags,
+      badge: null,
+    },
+    {
+      icon: Globe,
+      title: t.services.items.webDesign.title,
+      description: t.services.items.webDesign.desc,
+      tags: t.services.items.webDesign.tags,
       badge: null,
     },
     {
       icon: Bot,
-      title: "Enterprise System Integrations",
-      description: "Seamlessly embed custom AI models directly into your legacy software, CRMs (HubSpot, Salesforce, GoHighLevel), and ERPs without disrupting daily business operations.",
-      tags: ["CRM & ERP Integration", "Custom API Webhooks", "Data Normalization"],
+      title: t.services.items.integrations.title,
+      description: t.services.items.integrations.desc,
+      tags: t.services.items.integrations.tags,
       badge: null,
     },
   ];
@@ -42,18 +54,18 @@ export default function Services() {
         {/* Section Title */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-xs font-semibold tracking-wide text-cyan-400">
-            <span>Our Core Solutions</span>
+            <span>{t.services.badge}</span>
           </div>
           <h2 className="font-outfit text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-50 tracking-tight">
-            Engineered AI Systems Built for Measurable ROI
+            {t.services.title}
           </h2>
           <p className="text-slate-400 text-base sm:text-lg leading-relaxed">
-            We build production-ready, deterministic AI infrastructures that stop lead leaks, optimize operational margins, and scale business output.
+            {t.services.subtitle}
           </p>
         </div>
 
         {/* Services Grid */}
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {servicesList.map((service, idx) => {
             const Icon = service.icon;
             return (
@@ -63,7 +75,7 @@ export default function Services() {
               >
                 {/* Visual highlight badge if featured */}
                 {service.badge && (
-                  <span className="absolute top-4 right-4 px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                  <span className="absolute top-4 right-4 px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 animate-pulse">
                     {service.badge}
                   </span>
                 )}

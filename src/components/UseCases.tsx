@@ -2,60 +2,28 @@
 
 import { useState } from "react";
 import { Bot, FileText, CheckCircle2, ChevronRight, BarChart3, Users, Zap } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function UseCases() {
-  const useCases = [
-    {
-      id: "sales",
-      tabTitle: "Lead Qualification",
-      icon: Users,
-      title: "Speed-to-Lead & WhatsApp AI Agent",
-      problem: "Inbound sales leads sit cold for hours before a team member reviews and schedules a discovery call.",
-      solution: "An instant AI assistant (WhatsApp, Web & Social) that engages inbound leads in under 60 seconds, answers initial questions, qualifies the prospect, and books a call directly onto your team's calendar.",
-      metric: "< 60s Lead Response",
-      impact: ["Responds 24/7 on WhatsApp & Web", "Automatically syncs with your CRM", "Filters low-intent spam leads"],
-    },
-    {
-      id: "docs",
-      tabTitle: "Document Processing",
-      icon: FileText,
-      title: "Automated Document Data Capture",
-      problem: "Operations teams waste hours manually typing information from PDF invoices, receipts, and client forms into software.",
-      solution: "An intelligent document processing workflow that automatically reads uploaded PDFs or images, extracts exact key data fields, and writes them straight into your accounting or database tools.",
-      metric: "90% Faster Invoice Capture",
-      impact: ["Eliminates manual entry errors", "Processes files in seconds", "Connects to your financial software"],
-    },
-    {
-      id: "support",
-      tabTitle: "Customer Support",
-      icon: Bot,
-      title: "24/7 Customer Support Assistant",
-      problem: "Support inboxes get overwhelmed with repetitive questions, causing long response times and unhappy customers.",
-      solution: "A custom AI support assistant trained on your company's FAQs, product guides, and policies. It answers routine client questions instantly while escalating complex tickets to your human team.",
-      metric: "65% Support Deflection",
-      impact: ["Instant answers 24 hours a day", "Saves staff time on repetitive tickets", "Customized to match your brand voice"],
-    },
-    {
-    id: "analytics",
-    tabTitle: "Data & Insights",
-    icon: BarChart3,
-    title: "Instant Business Intelligence",
-    problem: "Business owners and managers wait days for staff to compile spreadsheet summaries and weekly reports.",
-    solution: "An internal AI query assistant that lets company leaders ask questions in natural language (e.g., 'What were our top 3 lead sources this month?') and receive instant summaries and visual charts.",
-    metric: "Instant Performance Reports",
-    impact: ["Ask questions in natural language", "Real-time performance summaries", "Secure & private data handling"],
-    },
-    {
-      id: "workflow",
-      tabTitle: "Operations Sync",
-      icon: Zap,
-      title: "Cross-System Workflow Sync",
-      problem: "Your CRM, email platform, and internal software operate in silos, requiring duplicate manual data entry.",
-      solution: "We build background automation pipelines that automatically keep customer records, lead updates, and team notifications synchronized across all your software in real time.",
-      metric: "40+ Hours Saved / Month",
-      impact: ["Zero lost records", "Instant team notifications on Slack", "Automated weekly business updates"],
-    },
+  const { t } = useLanguage();
+
+  const useCasesList = [
+    { id: "sales", icon: Users },
+    { id: "docs", icon: FileText },
+    { id: "support", icon: Bot },
+    { id: "analytics", icon: BarChart3 },
+    { id: "workflow", icon: Zap },
   ];
+
+  const useCases = useCasesList.map((uc, idx) => ({
+    ...uc,
+    tabTitle: t.useCases.cases[idx]?.tabTitle || "",
+    title: t.useCases.cases[idx]?.title || "",
+    problem: t.useCases.cases[idx]?.problem || "",
+    solution: t.useCases.cases[idx]?.solution || "",
+    metric: t.useCases.cases[idx]?.metric || "",
+    impact: t.useCases.cases[idx]?.impact || [],
+  }));
 
   const [activeTab, setActiveTab] = useState(useCases[0].id);
   const activeData = useCases.find((uc) => uc.id === activeTab) || useCases[0];
@@ -70,13 +38,13 @@ export default function UseCases() {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-xs font-semibold tracking-wide text-cyan-400">
-            <span>Real Business Impact</span>
+            <span>{t.useCases.badge}</span>
           </div>
           <h2 className="font-outfit text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-50 tracking-tight">
-            Proven AI Applications In Action
+            {t.useCases.title}
           </h2>
           <p className="text-slate-400 text-base sm:text-lg leading-relaxed">
-            See how Plexonis AI builds tailored automations to solve actual operational bottlenecks.
+            {t.useCases.subtitle}
           </p>
         </div>
 
@@ -119,7 +87,7 @@ export default function UseCases() {
               <div className="space-y-4">
                 <div>
                   <h4 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
-                    The Pain Point
+                    {t.useCases.problemLabel}
                   </h4>
                   <p className="text-sm text-slate-300 leading-relaxed">
                     {activeData.problem}
@@ -128,7 +96,7 @@ export default function UseCases() {
 
                 <div>
                   <h4 className="text-xs font-semibold text-cyan-400 uppercase tracking-wider mb-1">
-                    Our Solution
+                    {t.useCases.solutionLabel}
                   </h4>
                   <p className="text-sm text-slate-300 leading-relaxed">
                     {activeData.solution}
@@ -152,7 +120,7 @@ export default function UseCases() {
           <div className="md:col-span-5 p-8 rounded-2xl bg-slate-900 border border-slate-800 flex flex-col justify-center text-center relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl -z-10" />
             <span className="text-xs font-mono tracking-widest text-cyan-400 uppercase mb-2">
-              Expected Outcome
+              {t.useCases.outcomeLabel}
             </span>
             <p className="font-outfit text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-50 leading-tight mb-6">
               {activeData.metric}
@@ -161,7 +129,7 @@ export default function UseCases() {
               href="#contact"
               className="inline-flex items-center justify-center self-center px-6 py-3 rounded-full text-xs font-semibold text-slate-200 bg-slate-800 border border-slate-700 hover:bg-slate-700 hover:text-white transition-all duration-300"
             >
-              Build this for your company
+              {t.useCases.cta}
               <ChevronRight className="ml-1 w-4 h-4" />
             </a>
           </div>

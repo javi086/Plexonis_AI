@@ -1,28 +1,23 @@
-import { Shield, Sparkles, TrendingUp, Users, CheckCircle2 } from "lucide-react";
+"use client";
+
+import { Shield, Sparkles, TrendingUp, Users } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function WhyChooseUs() {
-  const benefits = [
-    {
-      icon: TrendingUp,
-      title: "Measurable Business ROI",
-      description: "We tie every project directly to business metrics—reducing response times, saving manual staff hours, and increasing overall revenue.",
-    },
-    {
-      icon: Sparkles,
-      title: "Custom-Built for Your Tools",
-      description: "No generic templates or cookie-cutter bots. We engineer tailored integrations mapped specifically to your CRMs, software, and workflows.",
-    },
-    {
-      icon: Shield,
-      title: "Practical AI, Zero Hype",
-      description: "We skip the hype and focus on secure, dependable systems designed for accuracy, data privacy, and seamless daily operations.",
-    },
-    {
-      icon: Users,
-      title: "Dedicated Long-Term Support",
-      description: "As your business grows, your AI grows with you. We provide continuous system monitoring, regular updates, and active performance tuning.",
-    },
+  const { t } = useLanguage();
+
+  const benefitsList = [
+    { icon: TrendingUp },
+    { icon: Sparkles },
+    { icon: Shield },
+    { icon: Users },
   ];
+
+  const benefits = benefitsList.map((benefit, idx) => ({
+    ...benefit,
+    title: t.whyUs.benefits[idx]?.title || "",
+    description: t.whyUs.benefits[idx]?.desc || "",
+  }));
 
   return (
     <section id="benefits" className="py-24 relative overflow-hidden bg-slate-950">
@@ -33,26 +28,26 @@ export default function WhyChooseUs() {
         {/* Left Column - Headline & Key Proof Points */}
         <div className="md:col-span-5 space-y-6">
           <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-xs font-semibold tracking-wide text-cyan-400">
-            <span>Why Partner With Plexonis AI</span>
+            <span>{t.whyUs.badge}</span>
           </div>
 
           <h2 className="font-outfit text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-50 leading-tight tracking-tight">
-            We Build Reliable AI Systems That Drive Real Growth
+            {t.whyUs.title}
           </h2>
 
           <p className="text-slate-400 text-base leading-relaxed">
-            Many AI experiments fail because they aren't properly connected to daily business workflows. We design secure, dependable systems that fit naturally into your existing operations.
+            {t.whyUs.subtitle}
           </p>
 
           {/* High-Impact Stat Boxes */}
           <div className="pt-4 grid grid-cols-2 gap-4">
             <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
-            <p className="text-3xl font-extrabold text-slate-50 font-outfit">100%</p>
-            <p className="text-xs text-slate-400 mt-1 font-medium">Custom Workflows</p>
+              <p className="text-3xl font-extrabold text-slate-50 font-outfit">{t.whyUs.stats.stat1}</p>
+              <p className="text-xs text-slate-400 mt-1 font-medium">{t.whyUs.stats.label1}</p>
             </div>
             <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
-            <p className="text-3xl font-extrabold text-slate-50 font-outfit">365</p>
-            <p className="text-xs text-slate-400 mt-1 font-medium">24/7 Monitoring & Support</p>
+              <p className="text-3xl font-extrabold text-slate-50 font-outfit">{t.whyUs.stats.stat2}</p>
+              <p className="text-xs text-slate-400 mt-1 font-medium">{t.whyUs.stats.label2}</p>
             </div>
           </div>
         </div>

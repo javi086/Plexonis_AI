@@ -1,6 +1,15 @@
+"use client";
+
 import { Cpu } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Footer() {
+  const { t, language } = useLanguage();
+  
+  const copyrightText = language === "es" 
+    ? "Todos los derechos reservados. Diseñado para la empresa moderna."
+    : "All rights reserved. Built for modern business.";
+
   return (
     <footer className="border-t border-white/5 bg-[#070c18] py-12">
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-6">
@@ -18,15 +27,15 @@ export default function Footer() {
 
         {/* Quick Links */}
         <div className="flex flex-wrap justify-center gap-6 text-xs text-gray-500">
-          <a href="#services" className="hover:text-gray-300 transition-colors">Services</a>
-          <a href="#process" className="hover:text-gray-300 transition-colors">Methodology</a>
-          <a href="#benefits" className="hover:text-gray-300 transition-colors">Why Us</a>
-          <a href="#use-cases" className="hover:text-gray-300 transition-colors">Use Cases</a>
+          <a href="#services" className="hover:text-gray-300 transition-colors">{t.nav.services}</a>
+          <a href="#process" className="hover:text-gray-300 transition-colors">{t.nav.methodology}</a>
+          <a href="#benefits" className="hover:text-gray-300 transition-colors">{t.nav.whyUs}</a>
+          <a href="#use-cases" className="hover:text-gray-300 transition-colors">{t.nav.useCases}</a>
         </div>
 
         {/* Meta / Copyright */}
         <p className="text-xs text-gray-600 text-center md:text-right">
-          &copy; {new Date().getFullYear()} Plexonis AI. All rights reserved. Built for modern business.
+          &copy; {new Date().getFullYear()} Plexonis AI. {copyrightText}
         </p>
       </div>
     </footer>

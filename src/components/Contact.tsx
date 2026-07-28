@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, Check, Calendar, ArrowRight, Loader2, PhoneCall } from "lucide-react";
+import { Mail, Check, Calendar, ArrowRight, Loader2 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Contact() {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -16,18 +18,32 @@ export default function Contact() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Email Validation using Regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setStatus("error");
+      return;
+    }
+
     setStatus("submitting");
 
     try {
-      // Replace with your live n8n / Make webhook URL once deployed
-      // await fetch("https://your-n8n-instance.com/webhook/contact-lead", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify(formData),
-      // });
-
-      // Simulated network request for local testing
-      await new Promise((resolve) => setTimeout(resolve, 1200));
+      const webhookUrl = process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL;
+      
+      if (webhookUrl) {
+        const response = await fetch(webhookUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
+        if (!response.ok) {
+          throw new Error("Webhook submission failed");
+        }
+      } else {
+        // Fallback simulated network request for testing
+        await new Promise((resolve) => setTimeout(resolve, 1200));
+      }
 
       setStatus("success");
       setFormData({
@@ -64,13 +80,13 @@ export default function Contact() {
           <div className="md:col-span-5 flex flex-col justify-between space-y-8">
             <div className="space-y-6">
               <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-xs font-semibold tracking-wide text-cyan-400">
-                <span>Start Your Automation</span>
+                <span>{t.contact.badge}</span>
               </div>
               <h2 className="font-outfit text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-50 leading-tight tracking-tight">
-                Let's Build Your Automated Workflows
+                {t.contact.title}
               </h2>
               <p className="text-slate-400 text-base leading-relaxed">
-                Ready to stop lead leaks and eliminate manual time-wasters? Fill out the brief or schedule a discovery call with our solutions team.
+                {t.contact.subtitle}
               </p>
             </div>
 
@@ -80,9 +96,9 @@ export default function Contact() {
               <div className="p-5 bg-slate-900/80 rounded-2xl border border-slate-800 flex items-start space-x-4 hover:border-slate-700 transition-colors">
                 <Calendar className="w-5 h-5 text-cyan-400 shrink-0 mt-1" />
                 <div>
-                  <h3 className="font-outfit text-sm font-bold text-slate-100">Schedule a 15-Min Scoping Call</h3>
+                  <h3 className="font-outfit text-sm font-bold text-slate-100">{t.contact.calendarTitle}</h3>
                   <p className="text-xs text-slate-400 mt-1 mb-3">
-                    Select a time on our live calendar to discuss your current workflows.
+                    {t.contact.calendarDesc}
                   </p>
                   <a
                     href="https://cal.com/plexonis" 
@@ -90,7 +106,7 @@ export default function Contact() {
                     rel="noopener noreferrer"
                     className="inline-flex items-center text-xs font-bold text-cyan-400 hover:text-cyan-300 transition-colors"
                   >
-                    Select a calendar time slot
+                    {t.contact.calendarBtn}
                     <ArrowRight className="ml-1 w-3.5 h-3.5" />
                   </a>
                 </div>
@@ -100,9 +116,9 @@ export default function Contact() {
               <div className="p-5 bg-slate-900/80 rounded-2xl border border-slate-800 flex items-start space-x-4 hover:border-slate-700 transition-colors">
                 <Mail className="w-5 h-5 text-blue-400 shrink-0 mt-1" />
                 <div>
-                  <h3 className="font-outfit text-sm font-bold text-slate-100">Email Us Directly</h3>
+                  <h3 className="font-outfit text-sm font-bold text-slate-100">{t.contact.emailTitle}</h3>
                   <p className="text-xs text-slate-400 mt-1">
-                    Send project requirements or general questions directly to our inbox.
+                    {t.contact.emailDesc}
                   </p>
                   <a 
                     href="mailto:hello@plexonis.com" 
@@ -123,16 +139,16 @@ export default function Contact() {
                   <Check className="w-8 h-8" />
                 </div>
                 <h3 className="font-outfit text-2xl font-bold text-slate-50">
-                  Project Brief Received!
+                  {t.contact.form.successTitle}
                 </h3>
                 <p className="text-sm text-slate-400 max-w-sm mx-auto leading-relaxed">
-                  Thank you for reaching out. Our team will review your project requirements and follow up within 24 hours.
+                  {t.contact.form.successDesc}
                 </p>
                 <button
                   onClick={() => setStatus("idle")}
                   className="mt-4 px-6 py-2.5 rounded-full text-xs font-semibold bg-slate-800 border border-slate-700 hover:bg-slate-700 text-slate-200 transition-colors"
                 >
-                  Send another inquiry
+                  {t.contact.form.sendAnother}
                 </button>
               </div>
             ) : (
@@ -141,7 +157,7 @@ export default function Contact() {
                   {/* Name Input */}
                   <div className="space-y-2">
                     <label htmlFor="name" className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                      Your Name
+                      {t.contact.form.name}
                     </label>
                     <input
                       type="text"
@@ -158,7 +174,7 @@ export default function Contact() {
                   {/* Email Input */}
                   <div className="space-y-2">
                     <label htmlFor="email" className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                      Work Email
+                      {t.contact.form.email}
                     </label>
                     <input
                       type="email"
@@ -177,7 +193,7 @@ export default function Contact() {
                   {/* Company Input */}
                   <div className="space-y-2">
                     <label htmlFor="company" className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                      Company Name
+                      {t.contact.form.company}
                     </label>
                     <input
                       type="text"
@@ -193,7 +209,7 @@ export default function Contact() {
                   {/* Refined Interest Dropdown */}
                   <div className="space-y-2">
                     <label htmlFor="service" className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                      Primary Goal
+                      {t.contact.form.goal}
                     </label>
                     <select
                       id="service"
@@ -202,11 +218,11 @@ export default function Contact() {
                       onChange={handleChange}
                       className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl px-4 py-3 text-sm text-slate-100 outline-none transition-all"
                     >
-                      <option value="lead-agents">AI Lead Capture & WhatsApp Agents</option>
-                      <option value="workflows">Autonomous Workflow Engineering</option>
-                      <option value="web-design">AI Web Generation & Digital Experiences</option>
-                      <option value="knowledge-base">Custom Knowledge Base & RAG</option>
-                      <option value="integrations">Enterprise System Integrations</option>
+                      <option value="lead-agents">{t.contact.form.dropdownOptions.leadAgents}</option>
+                      <option value="workflows">{t.contact.form.dropdownOptions.workflows}</option>
+                      <option value="web-design">{t.contact.form.dropdownOptions.webDesign}</option>
+                      <option value="knowledge-base">{t.contact.form.dropdownOptions.knowledgeBase}</option>
+                      <option value="integrations">{t.contact.form.dropdownOptions.integrations}</option>
                     </select>
                   </div>
                 </div>
@@ -214,7 +230,7 @@ export default function Contact() {
                 {/* Project Details Textarea */}
                 <div className="space-y-2">
                   <label htmlFor="message" className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                    Project Overview
+                    {t.contact.form.overview}
                   </label>
                   <textarea
                     id="message"
@@ -223,8 +239,8 @@ export default function Contact() {
                     rows={4}
                     value={formData.message}
                     onChange={handleChange}
-                    placeholder="Tell us about the process, bottlenecks, or tools you want to automate..."
-                    className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 outline-none transition-all resize-none"
+                    placeholder={t.contact.form.overviewPlaceholder}
+                    className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-600 outline-none transition-all resize-none animate-pulse-slow"
                   />
                 </div>
 
@@ -237,12 +253,18 @@ export default function Contact() {
                   {status === "submitting" ? (
                     <>
                       <Loader2 className="animate-spin mr-2 w-4 h-4" />
-                      Sending Project Brief...
+                      {t.contact.form.submittingBtn}
                     </>
                   ) : (
-                    "Submit Inquiry"
+                    t.contact.form.submitBtn
                   )}
                 </button>
+                
+                {status === "error" && (
+                  <p className="text-xs text-red-400 text-center font-semibold mt-2">
+                    Please ensure you have entered a valid email address and try again.
+                  </p>
+                )}
               </form>
             )}
           </div>

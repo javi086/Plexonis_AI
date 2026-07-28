@@ -1,6 +1,11 @@
+"use client";
+
 import { ArrowRight, Bot, Sparkles, Zap, ShieldCheck, CheckCircle2 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Hero() {
+  const { t } = useLanguage();
+
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-32 pb-20 overflow-hidden bg-slate-950">
       {/* Dynamic glow circles */}
@@ -13,15 +18,19 @@ export default function Hero() {
           {/* Badge */}
           <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-xs font-semibold tracking-wide text-cyan-400">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Autonomous AI & Workflow Engineering</span>
+            <span>{t.hero.badge}</span>
           </div>
 
           <h1 className="font-outfit text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.15] text-slate-50">
-            Transform Your Business Operations Into <span className="bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent">Autonomous AI</span> Systems.
+            {t.hero.headlineStart}
+            <span className="bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent">
+              {t.hero.headlineGradient}
+            </span>
+            {t.hero.headlineEnd}
           </h1>
 
           <p className="text-lg text-slate-400 max-w-xl font-normal leading-relaxed">
-            We design autonomous agents, improve business workflows, and integrate intelligent software to optimize your operations and stop lead leaks.
+            {t.hero.subheadline}
           </p>
 
           {/* Action buttons */}
@@ -30,30 +39,30 @@ export default function Hero() {
               href="#contact"
               className="inline-flex items-center justify-center px-8 py-4 rounded-full text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-cyan-500 hover:opacity-95 shadow-lg shadow-cyan-500/10 transition-all duration-300"
             >
-              Book a Discovery Call
+              {t.hero.ctaPrimary}
               <ArrowRight className="ml-2 w-5 h-5" />
             </a>
             <a
               href="#services"
               className="inline-flex items-center justify-center px-8 py-4 rounded-full text-base font-semibold text-slate-300 hover:text-white bg-slate-900 hover:bg-slate-800 border border-slate-800 transition-all duration-300"
             >
-              Explore Services
+              {t.hero.ctaSecondary}
             </a>
           </div>
 
           {/* Trust points */}
           <div className="pt-8 border-t border-slate-800/80 grid grid-cols-3 gap-6 max-w-md">
             <div>
-              <p className="text-2xl font-bold text-slate-50 font-outfit">&lt; 60s</p>
-              <p className="text-xs text-slate-400">Response Speed</p>
+              <p className="text-2xl font-bold text-slate-50 font-outfit">{t.hero.metrics.speed}</p>
+              <p className="text-xs text-slate-400">{t.hero.metrics.speedLabel}</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-slate-50 font-outfit">+30%</p>
-              <p className="text-xs text-slate-400">Booked Consults</p>
+              <p className="text-2xl font-bold text-slate-50 font-outfit">{t.hero.metrics.consults}</p>
+              <p className="text-xs text-slate-400">{t.hero.metrics.consultsLabel}</p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-slate-50 font-outfit">24/7</p>
-              <p className="text-xs text-slate-400">Always Available</p>
+              <p className="text-2xl font-bold text-slate-50 font-outfit">{t.hero.metrics.availability}</p>
+              <p className="text-xs text-slate-400">{t.hero.metrics.availabilityLabel}</p>
             </div>
           </div>
         </div>
@@ -68,14 +77,14 @@ export default function Hero() {
                   <Bot className="w-5 h-5 text-cyan-400" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-slate-100 font-outfit">Plexonis System Engine</h3>
+                  <h3 className="text-sm font-semibold text-slate-100 font-outfit">{t.hero.dashboardCard.title}</h3>
                   <span className="text-[10px] text-emerald-400 flex items-center gap-1 font-mono">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Autonomous Mode Active
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> {t.hero.dashboardCard.status}
                   </span>
                 </div>
               </div>
               <div className="px-2.5 py-1 rounded bg-slate-800 text-[10px] font-mono text-slate-400 border border-slate-700">
-                Enterprise v2.4
+                {t.hero.dashboardCard.version}
               </div>
             </div>
 
@@ -83,7 +92,7 @@ export default function Hero() {
             <div className="flex-1 py-5 space-y-4 z-10">
               <div className="space-y-1.5">
                 <div className="flex justify-between text-xs font-mono">
-                  <span className="text-slate-400">CRM & Lead Intake Sync</span>
+                  <span className="text-slate-400">{t.hero.dashboardCard.crmSync}</span>
                   <span className="text-cyan-400">Active (100%)</span>
                 </div>
                 <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
@@ -93,7 +102,7 @@ export default function Hero() {
 
               <div className="space-y-1.5">
                 <div className="flex justify-between text-xs font-mono">
-                  <span className="text-slate-400">AI Lead Qualification Engine</span>
+                  <span className="text-slate-400">{t.hero.dashboardCard.qualifierEngine}</span>
                   <span className="text-blue-400">Processing</span>
                 </div>
                 <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
@@ -104,16 +113,16 @@ export default function Hero() {
               <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800 flex items-start space-x-3">
                 <Zap className="w-4 h-4 text-cyan-400 mt-0.5 shrink-0" />
                 <div>
-                  <p className="text-xs font-semibold text-slate-100 font-outfit">Autonomous Workflow Execution</p>
-                  <p className="text-[10px] text-slate-400">Inbound ad lead qualified & scheduled in &lt; 30 seconds.</p>
+                  <p className="text-xs font-semibold text-slate-100 font-outfit">{t.hero.dashboardCard.workflowExec}</p>
+                  <p className="text-[10px] text-slate-400">{t.hero.dashboardCard.workflowDesc}</p>
                 </div>
               </div>
             </div>
 
             {/* Bottom Status bar */}
             <div className="pt-4 border-t border-slate-800 flex items-center justify-between text-[11px] font-mono text-slate-400 z-10">
-              <span className="flex items-center gap-1"><ShieldCheck className="w-3.5 h-3.5 text-cyan-400" /> Enterprise SLA</span>
-              <span>Uptime: 99.9%</span>
+              <span className="flex items-center gap-1"><ShieldCheck className="w-3.5 h-3.5 text-cyan-400" /> {t.hero.dashboardCard.sla}</span>
+              <span>{t.hero.dashboardCard.uptime}</span>
             </div>
           </div>
         </div>

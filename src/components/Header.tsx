@@ -3,8 +3,39 @@
 import { useState, useEffect } from "react";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
+import { useLanguage } from "@/context/LanguageContext";
+
+export function LanguageSwitcher() {
+  const { language, setLanguage } = useLanguage();
+
+  return (
+    <div className="inline-flex items-center rounded-full bg-slate-900 border border-slate-800 p-1 text-xs font-semibold">
+      <button
+        onClick={() => setLanguage("en")}
+        className={`px-2.5 py-1 rounded-full transition-all ${
+          language === "en"
+            ? "bg-cyan-500 text-slate-950 font-bold"
+            : "text-slate-400 hover:text-slate-200"
+        }`}
+      >
+        EN
+      </button>
+      <button
+        onClick={() => setLanguage("es")}
+        className={`px-2.5 py-1 rounded-full transition-all ${
+          language === "es"
+            ? "bg-cyan-500 text-slate-950 font-bold"
+            : "text-slate-400 hover:text-slate-200"
+        }`}
+      >
+        ES
+      </button>
+    </div>
+  );
+}
 
 export default function Header() {
+  const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -21,10 +52,10 @@ export default function Header() {
   }, []);
 
   const navLinks = [
-    { name: "Services", href: "#services" },
-    { name: "Methodology", href: "#process" },
-    { name: "Why Us", href: "#benefits" },
-    { name: "Use Cases", href: "#use-cases" },
+    { name: t.nav.services, href: "#services" },
+    { name: t.nav.methodology, href: "#process" },
+    { name: t.nav.whyUs, href: "#benefits" },
+    { name: t.nav.useCases, href: "#use-cases" },
   ];
 
   return (
@@ -77,13 +108,14 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* CTA Button */}
-        <div className="hidden md:block">
+        {/* CTA Button & Switcher */}
+        <div className="hidden md:flex items-center space-x-4">
+          <LanguageSwitcher />
           <a
             href="#contact"
             className="inline-flex items-center justify-center px-5 py-2.5 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-cyan-500 hover:opacity-90 shadow-md shadow-cyan-500/10 transition-all duration-300"
           >
-            Get Started
+            {t.nav.getStarted}
             <ArrowUpRight className="ml-1.5 w-4 h-4" />
           </a>
         </div>
@@ -118,11 +150,14 @@ export default function Header() {
           <a
             href="#contact"
             onClick={() => setIsOpen(false)}
-            className="flex items-center justify-center w-full py-4 rounded-xl text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-cyan-500"
+            className="flex items-center justify-center w-full py-4 rounded-xl text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-cyan-500 animate-pulse-slow"
           >
-            Get Started
+            {t.nav.getStarted}
             <ArrowUpRight className="ml-1.5 w-5 h-5" />
           </a>
+          <div className="flex justify-center pt-4">
+            <LanguageSwitcher />
+          </div>
         </nav>
       </div>
     </header>

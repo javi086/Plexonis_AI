@@ -1,32 +1,23 @@
+"use client";
+
 import { Search, Compass, ShieldCheck, TrendingUp } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Process() {
-  const steps = [
-    {
-      num: "01",
-      icon: Search,
-      title: "1. Business Audit",
-      description: "We review your daily operations, identify manual time-wasters, and pinpoint exactly where automation will save you the most time and money.",
-    },
-    {
-      num: "02",
-      icon: Compass,
-      title: "2. Custom Solution Design",
-      description: "We map out a simple step-by-step plan tailored to your business, showing you exactly how the AI will work before writing a single line of code.",
-    },
-    {
-      num: "03",
-      icon: ShieldCheck,
-      title: "3. Safe Setup & Testing",
-      description: "We build and rigorously test your custom AI system in a private environment, ensuring 100% accuracy before connecting it to your business.",
-    },
-    {
-      num: "04",
-      icon: TrendingUp,
-      title: "4. Launch & Ongoing Support",
-      description: "Once live, we monitor performance, handle updates, and keep your systems running smoothly 24/7 so you can focus on growing your business.",
-    },
+  const { t } = useLanguage();
+
+  const stepsList = [
+    { num: "01", icon: Search },
+    { num: "02", icon: Compass },
+    { num: "03", icon: ShieldCheck },
+    { num: "04", icon: TrendingUp },
   ];
+
+  const steps = stepsList.map((step, idx) => ({
+    ...step,
+    title: t.process.steps[idx]?.title || "",
+    description: t.process.steps[idx]?.desc || "",
+  }));
 
   return (
     <section id="process" className="py-24 relative overflow-hidden bg-slate-950">
@@ -37,13 +28,13 @@ export default function Process() {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-xs font-semibold tracking-wide text-cyan-400">
-            <span>How We Work Together</span>
+            <span>{t.process.badge}</span>
           </div>
           <h2 className="font-outfit text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-50 tracking-tight">
-            A Simple, Proven Path to Automating Your Business
+            {t.process.title}
           </h2>
           <p className="text-slate-400 text-base sm:text-lg leading-relaxed">
-            No technical headaches or complicated code to learn. We handle the heavy lifting from start to finish.
+            {t.process.subtitle}
           </p>
         </div>
 
