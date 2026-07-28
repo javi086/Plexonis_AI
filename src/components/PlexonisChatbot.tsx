@@ -5,6 +5,13 @@ import "@n8n/chat/style.css";
 
 export default function PlexonisChatbot() {
   useEffect(() => {
+    // 0. Define Vue feature flags globally on the window object to silence the ESM bundler warnings
+    if (typeof window !== "undefined") {
+      (window as any).__VUE_OPTIONS_API__ = true;
+      (window as any).__VUE_PROD_DEVTOOLS__ = false;
+      (window as any).__VUE_PROD_HYDRATION_MISMATCH_DETAILS__ = false;
+    }
+
     // 1. Intercept fetch calls to mock the chatbot for testing when webhook is a placeholder
     const originalFetch = window.fetch;
     const webhookUrl = process.env.NEXT_PUBLIC_N8N_CHAT_WEBHOOK_URL || "";
