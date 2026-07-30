@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, Check, Calendar, ArrowRight, Loader2 } from "lucide-react";
+import { Mail, Check, MessageSquare, ArrowRight, Loader2 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function Contact() {
@@ -29,7 +29,7 @@ export default function Contact() {
     setStatus("submitting");
 
     try {
-      const webhookUrl = process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL;
+      const webhookUrl = process.env.NEXT_PUBLIC_N8N_CONTACT_WEBHOOK_URL;
       
       if (webhookUrl) {
         const response = await fetch(webhookUrl, {
@@ -92,23 +92,20 @@ export default function Contact() {
 
             {/* Quick Actions Cards */}
             <div className="space-y-4">
-              {/* Calendar Booking Card */}
-              <div className="p-5 bg-slate-900/80 rounded-2xl border border-slate-800 flex items-start space-x-4 hover:border-slate-700 transition-colors">
-                <Calendar className="w-5 h-5 text-cyan-400 shrink-0 mt-1" />
+              {/* Chatbot Card */}
+              <div 
+                className="p-5 bg-slate-900/80 rounded-2xl border border-slate-800 flex items-start space-x-4 hover:border-slate-700 transition-colors"
+              >
+                <MessageSquare className="w-5 h-5 text-cyan-400 shrink-0 mt-1" />
                 <div>
-                  <h3 className="font-outfit text-sm font-bold text-slate-100">{t.contact.calendarTitle}</h3>
+                  <h3 className="font-outfit text-sm font-bold text-slate-100">{t.contact.chatbotTitle}</h3>
                   <p className="text-xs text-slate-400 mt-1 mb-3">
-                    {t.contact.calendarDesc}
+                    {t.contact.chatbotDesc}
                   </p>
-                  <a
-                    href="https://cal.com/plexonis" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-xs font-bold text-cyan-400 hover:text-cyan-300 transition-colors"
-                  >
-                    {t.contact.calendarBtn}
+                  <span className="inline-flex items-center text-xs font-bold text-cyan-400 ">
+                    {t.contact.chatbotBtn}
                     <ArrowRight className="ml-1 w-3.5 h-3.5" />
-                  </a>
+                  </span>
                 </div>
               </div>
 
@@ -121,10 +118,10 @@ export default function Contact() {
                     {t.contact.emailDesc}
                   </p>
                   <a 
-                    href="mailto:hello@plexonis.com" 
+                    href="mailto:plexonisai@gmail.com" 
                     className="text-xs font-mono text-cyan-400 mt-2 block hover:underline"
                   >
-                    hello@plexonis.com
+                    plexonisai@gmail.com
                   </a>
                 </div>
               </div>
