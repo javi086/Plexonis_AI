@@ -185,9 +185,9 @@ export const en: Dictionary = {
     badge: "Start Your Automation",
     title: "Let's Build Your Automated Workflows",
     subtitle: "Ready to stop lead leaks and eliminate manual time-wasters? Fill out the brief or schedule a discovery call with our solutions team.",
-    calendarTitle: "Schedule a 15-Min Scoping Call",
-    calendarDesc: "Select a time on our live calendar to discuss your current workflows.",
-    calendarBtn: "Select a calendar time slot",
+    chatbotTitle: "Chat with Plexonis AI",
+    chatbotDesc: "Share your contact information and workflow requirements instantly with our intelligent assistant.",
+    chatbotBtn: "Start Chatting Now",
     emailTitle: "Email Us Directly",
     emailDesc: "Send project requirements or general questions directly to our inbox.",
     form: {

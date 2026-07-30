@@ -21,7 +21,7 @@ export default function Footer() {
             </div>
           </div>
           <span className="font-outfit text-lg font-bold tracking-tight text-white animate-pulse-slow">
-            Plexonis<span className="text-brand-cyan">.AI</span>
+            Plexonis<span className="text-brand-cyan"> AI</span>
           </span>
         </div>
 

@@ -116,9 +116,9 @@ export interface Dictionary {
     badge: string;
     title: string;
     subtitle: string;
-    calendarTitle: string;
-    calendarDesc: string;
-    calendarBtn: string;
+    chatbotTitle: string;
+    chatbotDesc: string;
+    chatbotBtn: string;
     emailTitle: string;
     emailDesc: string;
     form: {

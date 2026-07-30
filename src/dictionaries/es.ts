@@ -185,9 +185,9 @@ export const es: Dictionary = {
     badge: "Inicie su Automatización",
     title: "Construyamos sus Flujos de Trabajo Automatizados",
     subtitle: "¿Listo para eliminar pérdidas de leads y optimizar sus tareas manuales? Complete el formulario o agende una llamada de diagnóstico con nuestro equipo.",
-    calendarTitle: "Agendar Llamada de 15 Minutos",
-    calendarDesc: "Seleccione un horario en nuestro calendario en vivo para analizar sus procesos actuales.",
-    calendarBtn: "Seleccionar horario en calendario",
+    chatbotTitle: "Chatee con Plexonis AI",
+    chatbotDesc: "Comparta sus datos de contacto y requerimientos al instante con nuestro asistente inteligente.",
+    chatbotBtn: "Iniciar Chat Ahora",
     emailTitle: "Escríbanos Directamente",
     emailDesc: "Envíe requerimientos de proyecto o consultas directamente a nuestro correo.",
     form: {
