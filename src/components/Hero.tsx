@@ -22,11 +22,11 @@ export default function Hero() {
           </div>
 
           <h1 className="font-outfit text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.15] text-slate-50">
-            {t.hero.headlineStart}
-            <span className="bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent">
+            <span className="block">{t.hero.headlineStart}</span>
+            <span className="block bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent">
               {t.hero.headlineGradient}
             </span>
-            {t.hero.headlineEnd}
+            {t.hero.headlineEnd && <span className="block">{t.hero.headlineEnd}</span>}
           </h1>
 
           <p className="text-lg text-slate-400 max-w-xl font-normal leading-relaxed">
