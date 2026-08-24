@@ -29,7 +29,10 @@ export default function Contact() {
     setStatus("submitting");
 
     try {
-      const webhookUrl = process.env.NEXT_PUBLIC_N8N_CONTACT_WEBHOOK_URL;
+      const DEFAULT_CONTACT_WEBHOOK = 
+        "https://n8n-n8n.u7ftoi.easypanel.host/webhook/plexonis_contact";
+      const webhookUrl = 
+        process.env.NEXT_PUBLIC_N8N_CONTACT_WEBHOOK_URL || DEFAULT_CONTACT_WEBHOOK;
       
       if (webhookUrl) {
         const response = await fetch(webhookUrl, {
@@ -118,10 +121,10 @@ export default function Contact() {
                     {t.contact.emailDesc}
                   </p>
                   <a 
-                    href="mailto:plexonisai@gmail.com" 
+                    href="mailto:contact@plexonis.com" 
                     className="text-xs font-mono text-cyan-400 mt-2 block hover:underline"
                   >
-                    plexonisai@gmail.com
+                    contact@plexonis.com
                   </a>
                 </div>
               </div>

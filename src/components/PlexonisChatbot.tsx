@@ -23,29 +23,49 @@ export default function PlexonisChatbot() {
       return;
     }
 
-    import("@n8n/chat").then(({ createChat }) => {
-      createChat({
-        webhookUrl: WEBHOOK_URL,
-        mode: "window",
-        showWelcomeScreen: false,
-        initialMessages: [
+    // Detect browser language (Spanish vs. English default)
+    const isSpanish =
+      typeof navigator !== "undefined" &&
+      navigator.language.toLowerCase().startsWith("es");
+
+    const initialMessages = isSpanish
+      ? [
+          "¡Hola! 👋 Te damos la bienvenida a Plexonis AI.",
+          "¿En qué podemos ayudarte hoy?"
+        ]
+      : [
           "Hi there! 👋 Welcome to Plexonis AI.",
-          "How can I help you today?"
-        ],
-        i18n: {
-          en: {
-            title: "Plexonis Assistant",
-            subtitle: "Enterprise Workflow & Speed-to-Lead Support",
-            footer: "Powered by Plexonis AI",
-            getStarted: "New Conversation",
-            inputPlaceholder: "Ask about our services, pricing, or setup time...",
-            closeButtonTooltip: "Close Chat"
+          "How can we help you today?"
+        ];
+
+    import("@n8n/chat")
+      .then(({ createChat }) => { 
+        createChat({
+          webhookUrl: WEBHOOK_URL,
+          mode: "window",
+          showWelcomeScreen: false,
+          initialMessages,
+          i18n: {
+            en: {
+              title: isSpanish ? "Asistente Plexonis" : "Plexonis Assistant",
+              subtitle: isSpanish
+                ? "Automatización y Sistemas Empresariales"
+                : "Enterprise Workflow & Speed-to-Lead Support",
+              footer: isSpanish
+                ? "Desarrollado por Plexonis AI"
+                : "Powered by Plexonis AI",
+              getStarted: isSpanish ? "Nueva Conversación" : "New Conversation",
+              inputPlaceholder: isSpanish
+                ? "Pregunta sobre servicios, precios o tiempos de entrega..."
+                : "Ask about our services, pricing, or setup time...",
+              closeButtonTooltip: isSpanish ? "Cerrar Chat" : "Close Chat"
+            }
           }
-        }
+        });
+      })
+      .catch((err) => {
+        console.error("n8n Chatbot failed to load:", err);
       });
-    }).catch((err) => {
-      console.error("n8n Chatbot failed to load:", err);
-    });
   }, []);
 
   return null;
