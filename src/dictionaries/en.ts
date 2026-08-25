@@ -5,7 +5,7 @@ export const en: Dictionary = {
     services: "Solutions",
     methodology: "How We Work",
     whyUs: "Why Choose Us",
-    useCases: "Success Stories",
+    useCases: "Case Studies",
     getStarted: "Get Started",
   },
   hero: {
