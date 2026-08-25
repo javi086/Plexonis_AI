@@ -39,6 +39,7 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
+  // Handle scroll detection
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 20) {
@@ -51,6 +52,18 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Lock background body scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
   const navLinks = [
     { name: t.nav.services, href: "#services" },
     { name: t.nav.methodology, href: "#process" },
@@ -61,17 +74,15 @@ export default function Header() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-slate-800/50 ${
-        scrolled
-          ? "bg-[#070c18]/80 backdrop-blur-md shadow-lg shadow-black/20 py-3.5"
+        isOpen || scrolled
+          ? "bg-[#070c18] backdrop-blur-md shadow-lg shadow-black/20 py-3.5"
           : "bg-transparent py-5"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
-        
-       {/* Logo Block */}
+        {/* Logo Block */}
         <a href="/" className="flex items-center gap-3.5 group focus:outline-none">
-          {/* High-Contrast Badge Wrapper */}
-          <div className="relative h-13 w-13 md:h-14 md:w-14 flex-shrink-0 flex items-center justify-center rounded-2xl bg-white/95 p-2 shadow-md shadow-cyan-500/10 border border-white/20 transition-all duration-200 group-hover:scale-105 group-hover:shadow-cyan-500/25">
+          <div className="relative h-12 w-12 md:h-14 md:w-14 flex-shrink-0 flex items-center justify-center rounded-2xl bg-white/95 p-2 shadow-md shadow-cyan-500/10 border border-white/20 transition-all duration-200 group-hover:scale-105">
             <div className="relative h-full w-full">
               <Image
                 src="/images/plexonis_Icon_v1.png"
@@ -84,11 +95,8 @@ export default function Header() {
             </div>
           </div>
 
-          {/* Typography Engine */}
           <div className="flex items-center text-2xl font-bold tracking-tight">
-            <span className="text-slate-50 transition-colors">
-              Plexonis
-            </span>
+            <span className="text-slate-50 transition-colors">Plexonis</span>
             <span className="ml-1 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent font-extrabold">
               AI
             </span>
@@ -123,7 +131,7 @@ export default function Header() {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden p-2 text-slate-300 hover:text-white transition-colors"
+          className="md:hidden p-2 text-slate-300 hover:text-white transition-colors focus:outline-none"
           aria-label="Toggle menu"
         >
           {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -132,30 +140,34 @@ export default function Header() {
 
       {/* Mobile Drawer */}
       <div
-        className={`fixed inset-0 top-[65px] z-40 bg-[#070c18]/98 backdrop-blur-xl md:hidden transition-all duration-300 transform ${
-          isOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
+        className={`fixed inset-x-0 top-full h-[calc(100dvh-70px)] z-40 bg-[#070c18] border-t border-slate-800/80 overflow-y-auto md:hidden transition-all duration-300 ease-in-out ${
+          isOpen
+            ? "translate-x-0 opacity-100 pointer-events-auto"
+            : "translate-x-full opacity-0 pointer-events-none"
         }`}
       >
-        <nav className="flex flex-col p-8 space-y-6">
+        <nav className="flex flex-col p-6 space-y-5">
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
               onClick={() => setIsOpen(false)}
-              className="text-lg font-medium text-slate-300 hover:text-cyan-400 transition-colors border-b border-slate-800 pb-3"
+              className="text-lg font-medium text-slate-200 hover:text-cyan-400 transition-colors border-b border-slate-800/70 pb-3"
             >
               {link.name}
             </a>
           ))}
+
           <a
             href="#contact"
             onClick={() => setIsOpen(false)}
-            className="flex items-center justify-center w-full py-4 rounded-xl text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-cyan-500 animate-pulse-slow"
+            className="flex items-center justify-center w-full py-3.5 rounded-xl text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-cyan-500 shadow-lg shadow-cyan-500/20"
           >
             {t.nav.getStarted}
             <ArrowUpRight className="ml-1.5 w-5 h-5" />
           </a>
-          <div className="flex justify-center pt-4">
+
+          <div className="flex justify-center pt-2">
             <LanguageSwitcher />
           </div>
         </nav>

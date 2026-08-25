@@ -5,13 +5,13 @@ export const es: Dictionary = {
     services: "Soluciones",
     methodology: "Cómo Trabajamos",
     whyUs: "Por Qué Elegirnos",
-    useCases: "Casos de Éxito",
+    useCases: "Casos Practicos",
     getStarted: "Comenzar",
   },
   hero: {
     badge: "Automatización práctica para empresas",
-    headlineStart: "Dile adiós a las tareas manuales ",
-    headlineGradient: "y haz crecer tus ventas.",
+    headlineStart: "Adiós tareas manuales. ",
+    headlineGradient: "Hola crecimiento de ventas.",
     headlineEnd: "",
     subheadline:
       "Conectamos tu negocio con sistemas inteligentes que atienden a cada cliente en segundos, las 24 horas del día. Aumenta tus ventas sin sobrecargar a tu equipo.",
